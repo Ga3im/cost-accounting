@@ -1,0 +1,33 @@
+.main {
+  padding-top: 30px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  background-color: #656565;
+  height: 100vh;
+}
+.form {
+  display: flex;
+  gap: 20px;
+}
+.listHead {
+  display: flex;
+  align-items: center;
+  gap: 100px;
+}
+.item {
+  width: 200px;
+}
+.btn {
+  border-radius: 5px;
+  padding: 5px 10px;
+  background: greenyellow;
+  color: black;
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+.btn:hover {
+  transform: scale(1.08);
+}
