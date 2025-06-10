@@ -1,34 +1,35 @@
-'use client'
-import { useState } from 'react'
-import styles from './page.module.css'
+import { useState } from "react";
+import styles from "./Main.module.css";
 
-type ListType = {
-  id: number
-  date: string
-  store: string
-  activity: string
-  price: number
-}
+type listType = {
+  id: number;
+  date: string;
+  store: string;
+  activity: string;
+  price: number;
+};
 
-export default function Home() {
-  const [newItem, setNewItem] = useState<ListType>({
+export const Main = () => {
+  const [newItem, setNewItem] = useState<listType>({
     id: 0,
-    date: '',
-    store: '',
-    activity: '',
+    date: "",
+    store: "",
+    activity: "",
     price: 0,
-  })
-  const listStorage: ListType[] =
-    JSON.parse(localStorage.getItem('purchases')) || []
-  const [list, setList] = useState<ListType[]>(listStorage)
+  });
+
+  const listStorage: listType[] = localStorage.getItem("purchases")
+    ? JSON.parse(localStorage.getItem("purchases"))
+    : [];
+  const [list, setList] = useState<listType[]>(listStorage);
 
   const addNewItem = () => {
-    setList([...list, newItem])
-    localStorage.setItem('purchases', JSON.stringify(list))
-    console.log(list)
-    console.log(localStorage.getItem('purchases'))
-  }
-  console.log(newItem)
+    setList([...list, newItem]);
+    localStorage.setItem("purchases", JSON.stringify(list));
+    console.log(list);
+    console.log(localStorage.getItem("purchases"));
+  };
+  console.log(newItem);
   return (
     <>
       <div className={styles.main}>
@@ -88,5 +89,5 @@ export default function Home() {
         })} */}
       </div>
     </>
-  )
-}
+  );
+};
