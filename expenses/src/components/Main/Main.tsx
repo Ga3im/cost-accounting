@@ -4,7 +4,7 @@ import { useOutsideClick } from "../../hooks/modalClose";
 import { Filter } from "../Filter/Filter";
 
 type listType = {
-  id: number;
+  id: Date | null;
   date: string;
   store: string | null | string[];
   activity: string;
@@ -14,6 +14,8 @@ type listType = {
 export const Main = () => {
   const [isActiveBtn, setIsActiveBtn] = useState<boolean>(true);
   const [isEdit, setIsEdit] = useState<boolean>(false);
+  const [search, setSearch] = useState<string>("");
+  const [filter, setFilter] = useState<listType[] | null>(null);
   const [storeList, setStoreList] = useState<boolean>(false);
   const stores: string[] = [
     "Пятерочка",
@@ -40,12 +42,38 @@ export const Main = () => {
 
   const [edit, setEdit] = useState<null | listType>(null);
   const [newItem, setNewItem] = useState<listType>({
-    id: 1,
+    id: new Date(),
     date: "",
     store: "",
     activity: "Питание",
     price: 0,
   });
+
+  useEffect(() => {
+    list.map((i) => {
+      i.store?.includes(search);
+      setFilter(i);
+    });
+    console.log(filter);
+  }, [search]);
+
+  useEffect(() => {
+    if (
+      newItem.date === "" ||
+      newItem.store === "" ||
+      newItem.price === 0 ||
+      newItem.activity === ""
+    ) {
+      setIsActiveBtn(true);
+    } else {
+      setIsActiveBtn(false);
+    }
+  }, [newItem]);
+
+  const updateList = (newList: listType[]) => {
+    setList(newList);
+    localStorage.setItem("purchases", JSON.stringify(newList));
+  };
 
   const listStorage: listType[] = [];
 
@@ -68,47 +96,42 @@ export const Main = () => {
         store: e.target.textContent,
       });
     }
+    setStoreList(false);
   };
 
   const saveEdittedlist = () => {
     setIsEdit(false);
+    list.map((i) => (i === edit ? (i = edit) : i));
   };
 
   const addNewItem = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (list) {
-      setNewItem({ ...newItem, id: newItem.id + 1 });
-    }
     if (
       newItem.date !== "" ||
       newItem.store !== "" ||
       newItem.price !== null ||
       newItem.activity !== ""
     ) {
+      if (dateInputRef.current !== null) {
+        dateInputRef.current.value = "";
+      }
       if (storeInputRef.current !== null) {
         storeInputRef.current.value = "";
       }
-      setList([...list, newItem]);
-      localStorage.setItem("purchases", JSON.stringify(list));
+      if (priceInputRef.current !== null) {
+        priceInputRef.current.value = "";
+      }
+
+      updateList([...list, newItem]);
+
+      setNewItem({ ...newItem, id: new Date(), date: "", store: "", price: 0 });
+      console.log(newItem);
     }
   };
 
   const closeHintStore = () => {
     setStoreList(false);
   };
-
-  useEffect(() => {
-    if (
-      newItem.date === "" ||
-      newItem.store === "" ||
-      newItem.price === null ||
-      newItem.activity === ""
-    ) {
-      setIsActiveBtn(true);
-    } else {
-      setIsActiveBtn(false);
-    }
-  }, [newItem]);
 
   const editItem = (e: listType) => {
     setIsEdit(true);
@@ -127,9 +150,13 @@ export const Main = () => {
     }
   };
 
+  const cancelEditting = () => {
+    setIsEdit(false);
+    setEdit(null);
+  };
+
   const deleteItem = (e: listType) => {
-    setList(list.filter((i) => i !== e));
-    localStorage.setItem("purchases", JSON.stringify(list));
+    updateList(list.filter((i) => i !== e));
   };
 
   useOutsideClick(ulRef, closeHintStore);
@@ -137,7 +164,7 @@ export const Main = () => {
   return (
     <>
       <div className={styles.main}>
-        <Filter />
+        <Filter setSearch={setSearch} />
         <form onSubmit={addNewItem} className={styles.form} action="">
           <div className={styles.content}>
             <div className={styles.inputData}>
@@ -157,9 +184,10 @@ export const Main = () => {
               <div>
                 <p>Магазин</p>
                 <input
+                  placeholder="Магазин"
                   onDoubleClick={() => setStoreList(true)}
+                  value={newItem.store}
                   ref={storeInputRef}
-                  defaultValue={newItem.store}
                   onFocus={() => setStoreList(true)}
                   className={storeList ? styles.itemActive : styles.item}
                   onChange={(e) =>
@@ -199,8 +227,9 @@ export const Main = () => {
                 </select>
               </div>
               <div>
-                <p>Цена</p>
+                <p>Цена, &#8381;</p>
                 <input
+                  placeholder="1 000 &#8381;"
                   ref={priceInputRef}
                   type="number"
                   onChange={(e) =>
@@ -211,9 +240,14 @@ export const Main = () => {
               </div>
             </div>
             {isEdit ? (
-              <button onClick={saveEdittedlist} className={styles.btn}>
-                Сохранить
-              </button>
+              <div className={styles.buttonsContent}>
+                <button onClick={saveEdittedlist} className={styles.btn}>
+                  Сохранить
+                </button>
+                <button onClick={cancelEditting} className={styles.btnCancel}>
+                  Отменить
+                </button>
+              </div>
             ) : (
               <button
                 disabled={isActiveBtn ? true : false}
@@ -229,7 +263,7 @@ export const Main = () => {
           <div className={styles.listNames}>
             <div>Дата</div>
             <div>Магазин</div>
-            <div>Цель</div>
+            <div>Для чего</div>
             <div className={styles.priceName}>Цена, </div>
           </div>
           {list.map((i) => {
@@ -243,7 +277,7 @@ export const Main = () => {
                 <div>{i.date}</div>
                 <div>{i.store}</div>
                 <div>{i.activity}</div>
-                <div>{i.price}</div>
+                <div>{i.price.toLocaleString()}</div>
                 <div>
                   <button
                     onClick={() => editItem(i)}
