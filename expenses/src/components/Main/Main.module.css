@@ -1,0 +1,174 @@
+.main {
+  padding-top: 30px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  background-color: #656565;
+  height: 100vh;
+}
+.form {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+}
+
+.inputData {
+  display: flex;
+  gap: 30px;
+}
+
+.listNames {
+  display: grid;
+  font-size: 18px;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 25px;
+  padding-bottom: 10px;
+  padding-left: 80px;
+}
+
+.priceName::after {
+  content: "\20BD";
+}
+
+.listHead {
+  display: grid;
+  padding: 5px;
+  padding-left: 80px;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 25px;
+}
+
+.listHeadEditing {
+  display: grid;
+  padding: 5px;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 25px;
+  border: solid;
+  border-radius: 5px;
+}
+
+.item {
+  margin-top: 5px;
+  padding: 5px 10px;
+  border-radius: 5px;
+  border: none;
+  box-shadow: 0px 0px 20px -3px;
+}
+.itemActive {
+  margin-top: 5px;
+  padding: 5px 10px;
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
+  border: none;
+  box-shadow: 0px 0px 20px -3px;
+}
+.item::-webkit-outer-spin-button,
+.item::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+}
+
+.storeList {
+  background-color: azure;
+  border-bottom-left-radius: 5px;
+  border-bottom-right-radius: 5px;
+  list-style: none;
+  padding: 5px;
+}
+.storeItem {
+  cursor: pointer;
+  background-color: azure;
+
+  transition: all 0.3s;
+}
+.storeItem:hover {
+  text-decoration: underline;
+  transform: scale(1.05);
+}
+
+.selectItem {
+  width: 100%;
+  margin-top: 5px;
+  padding: 5px 10px;
+  border: none;
+  border-radius: 5px;
+  box-shadow: 0px 0px 20px -3px;
+}
+.selectItem::after {
+  padding-right: 5px;
+}
+
+.buttonsContent {
+  display: flex;
+  justify-content: center;
+  gap: 30px;
+}
+.btn {
+  margin-top: 20px;
+  border-radius: 5px;
+  padding: 5px 10px;
+  background: greenyellow;
+  color: black;
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s;
+  width: 100px;
+  place-self: center;
+  box-shadow: 0px 0px 10px 0px;
+}
+.btn:hover {
+  transform: scale(1.08);
+}
+
+.btnCancel {
+  margin-top: 20px;
+  border-radius: 5px;
+  padding: 5px 10px;
+  background: #fff;
+  color: black;
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s;
+  width: 100px;
+  place-self: center;
+  box-shadow: 0px 0px 10px 0px;
+}
+.btnCancel:hover {
+  transform: scale(1.05);
+}
+
+.disableBtn {
+  margin-top: 20px;
+  border-radius: 5px;
+  padding: 5px 10px;
+  opacity: 0.4;
+  background: greenyellow;
+  color: black;
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s;
+  width: 100px;
+  place-self: center;
+}
+
+.itemBtns {
+  background: none;
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+.itemBtns:hover {
+  transform: rotate(10deg) scale(1.3);
+}
+
+.totalPrice {
+  text-align: end;
+  padding-right: 50px;
+}
+.totalPrice::after {
+  content: "\20BD";
+}
